@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProSolvo — Outils numériques sur mesure | Automatisation, tableaux de bord, formulaires</title>
+<meta name="description" content="ProSolvo crée des outils numériques sur mesure pour les entreprises : automatisation, tableaux de bord, formulaires, traitement de données. Québec & France.">
+<link href="https://fonts.googleapis.com/css2?family=Satoshi:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07070e;
+  --surface: #0e0e1a;
+  --surface2: #161625;
+  --surface3: #1e1e30;
+  --text: #eeeef2;
+  --text-dim: #7c7c8e;
+  --text-mid: #a5a5b6;
+  --ember: #FF6B35;
+  --ember-light: #FF8F5E;
+  --cyan: #22d3ee;
+  --cyan-dim: #0e7490;
+  --lime: #84cc16;
+  --rose: #fb7185;
+  --violet: #8b5cf6;
+  --gold: #fbbf24;
+  --grad-ember: linear-gradient(135deg, #FF6B35, #FF8F5E, #fbbf24);
+  --grad-cool: linear-gradient(135deg, #22d3ee, #8b5cf6);
+  --grad-mix: linear-gradient(135deg, #FF6B35, #8b5cf6, #22d3ee);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Satoshi', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* GRAIN */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* GLOW ORBS */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.12;
+  pointer-events: none;
+}
+.orb-1 { width: 700px; height: 700px; background: var(--ember); top: -300px; right: -200px; }
+.orb-2 { width: 500px; height: 500px; background: var(--violet); top: 600px; left: -250px; }
+.orb-3 { width: 600px; height: 600px; background: var(--cyan); top: 1800px; right: -300px; }
+.orb-4 { width: 400px; height: 400px; background: var(--ember); top: 3200px; left: -150px; }
+.orb-5 { width: 500px; height: 500px; background: var(--violet); top: 4500px; right: -200px; }
+
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 18px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(24px) saturate(1.4);
+  background: rgba(7,7,14,0.75);
+  border-bottom: 1px solid rgba(255,107,53,0.06);
+}
+
+.logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.7rem;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+.logo em {
+  font-style: italic;
+  background: var(--grad-ember);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: color 0.3s;
+  letter-spacing: 0.3px;
+}
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta {
+  background: var(--ember) !important;
+  color: white !important;
+  padding: 10px 26px;
+  border-radius: 50px;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255,107,53,0.35);
+  color: white !important;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 140px 24px 100px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 22px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,107,53,0.2);
+  background: rgba(255,107,53,0.06);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ember-light);
+  margin-bottom: 36px;
+  animation: fadeUp 0.7s ease both;
+}
+.hero-tag .pulse-dot {
+  width: 7px; height: 7px;
+  background: var(--lime);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(3rem, 6.5vw, 5.8rem);
+  line-height: 1.05;
+  max-width: 850px;
+  margin-bottom: 28px;
+  letter-spacing: -1.5px;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+h1 .ember {
+  background: var(--grad-ember);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+h1 em {
+  font-style: italic;
+}
+
+.hero-p {
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  color: var(--text-mid);
+  max-width: 560px;
+  margin-bottom: 48px;
+  font-weight: 400;
+  line-height: 1.75;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeUp 0.7s ease 0.3s both;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 38px;
+  border-radius: 60px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Satoshi', sans-serif;
+  transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  border: none;
+}
+.btn-ember {
+  background: var(--ember);
+  color: white;
+}
+.btn-ember:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 44px rgba(255,107,53,0.35);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.btn-ghost:hover {
+  border-color: var(--ember);
+  background: rgba(255,107,53,0.05);
+}
+
+/* Scroll indicator */
+.scroll-cue {
+  position: absolute;
+  bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: fadeUp 0.7s ease 0.6s both;
+}
+.scroll-cue span {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.scroll-bar {
+  width: 1px; height: 36px;
+  background: linear-gradient(to bottom, var(--ember), transparent);
+  animation: scrollAnim 2s infinite;
+}
+
+/* ===== BEFORE / AFTER ===== */
+.section { padding: 130px 24px; position: relative; }
+
+.section-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--ember-light);
+  margin-bottom: 14px;
+}
+
+h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2.1rem, 4.2vw, 3.4rem);
+  margin-bottom: 18px;
+  line-height: 1.12;
+  letter-spacing: -0.8px;
+}
+h2 .ember {
+  background: var(--grad-ember);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-p {
+  color: var(--text-dim);
+  font-size: 1.08rem;
+  max-width: 540px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* Transform showcase */
+.showcase {
+  max-width: 1200px;
+  margin: 64px auto 0;
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.card {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.card-before {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 28px;
+}
+.card-after {
+  background: var(--surface);
+  border: 1px solid rgba(34,211,238,0.15);
+  padding: 6px;
+  box-shadow: 0 0 80px rgba(34,211,238,0.06);
+}
+
+.card-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-tag.bad { color: var(--rose); }
+.card-tag.good { color: var(--cyan); }
+
+/* Fake Excel */
+.xl {
+  background: #13132a;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.62rem;
+}
+.xl-bar {
+  background: #1c1c38;
+  padding: 8px 12px;
+  display: flex;
+  gap: 5px;
+}
+.xl-bar i { width: 9px; height: 9px; border-radius: 50%; }
+.xl-bar .r { background: #ff5f56; }
+.xl-bar .y { background: #ffbd2e; }
+.xl-bar .g { background: #27c93f; }
+
+.xl-grid {
+  display: grid;
+  grid-template-columns: 26px repeat(5,1fr);
+}
+.xl-c {
+  padding: 5px 7px;
+  border: 1px solid rgba(255,255,255,0.03);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-dim);
+}
+.xl-h { background: #1c1c38; text-align: center; font-weight: 700; color: var(--text-dim); }
+.xl-n { background: #1c1c38; text-align: center; color: var(--text-dim); }
+.xl-c.err { color: #ff6b6b; background: rgba(255,107,107,0.06); }
+.xl-c.ok { color: #69db7c; background: rgba(105,219,124,0.06); }
+.xl-c.warn { color: #ffd43b; background: rgba(255,212,59,0.06); }
+.xl-c.b { color: var(--text); font-weight: 600; }
+
+/* Fake App */
+.app {
+  background: var(--bg);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.app-bar {
+  background: linear-gradient(135deg, var(--ember), var(--violet));
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+.app-bar input {
+  background: rgba(255,255,255,0.18);
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.72rem;
+  width: 140px;
+  font-family: 'Satoshi', sans-serif;
+}
+.app-body { padding: 18px; }
+
+.app-kpis {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.kpi {
+  background: var(--surface2);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+}
+.kpi-val {
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.kpi-val.c1 { color: var(--cyan); }
+.kpi-val.c2 { color: var(--gold); }
+.kpi-val.c3 { color: var(--lime); }
+.kpi-lbl {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.app-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  background: var(--surface2);
+  font-size: 0.8rem;
+}
+.app-item .n { font-weight: 700; }
+.pill {
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.pill-ok { background: rgba(132,204,22,0.12); color: var(--lime); }
+.pill-wait { background: rgba(251,191,36,0.12); color: var(--gold); }
+.pill-late { background: rgba(251,113,133,0.12); color: var(--rose); }
+
+/* Arrow */
+.arrow-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.arrow-txt {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  background: var(--grad-ember);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.arrow-ln {
+  width: 60px; height: 2px;
+  background: var(--grad-ember);
+  position: relative;
+}
+.arrow-ln::after {
+  content: '';
+  position: absolute;
+  right: -2px; top: -5px;
+  border: 6px solid transparent;
+  border-left: 8px solid var(--gold);
+}
+
+/* ===== FEATURES ===== */
+.feat-grid {
+  max-width: 1100px;
+  margin: 64px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 20px;
+}
+
+.feat {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 20px;
+  padding: 36px 28px;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.feat::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--grad-ember);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.feat:hover {
+  border-color: rgba(255,107,53,0.15);
+  transform: translateY(-4px);
+}
+.feat:hover::after { opacity: 1; }
+
+.feat-ico {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 22px;
+}
+.fi1 { background: rgba(255,107,53,0.1); }
+.fi2 { background: rgba(34,211,238,0.1); }
+.fi3 { background: rgba(139,92,246,0.1); }
+.fi4 { background: rgba(251,191,36,0.1); }
+.fi5 { background: rgba(132,204,22,0.1); }
+.fi6 { background: rgba(251,113,133,0.1); }
+
+.feat h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: -0.2px;
+}
+.feat p {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+/* ===== PROCESS ===== */
+.steps {
+  max-width: 860px;
+  margin: 72px auto 0;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 52px;
+  position: relative;
+}
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 35px;
+  top: 78px;
+  bottom: -52px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--ember), transparent);
+  opacity: 0.3;
+}
+
+.step-num {
+  width: 72px; height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.8rem;
+  background: var(--surface);
+  border: 1px solid rgba(255,107,53,0.15);
+  color: var(--ember-light);
+}
+
+.step-body h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  margin-top: 6px;
+}
+.step-body p {
+  color: var(--text-dim);
+  font-weight: 400;
+  line-height: 1.75;
+  font-size: 1rem;
+}
+.step-chip {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 5px 16px;
+  border-radius: 20px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  background: rgba(34,211,238,0.08);
+  color: var(--cyan);
+  letter-spacing: 0.3px;
+}
+
+/* ===== STATS ===== */
+.stats-bar {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 28px;
+  padding: 56px 48px;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.stats-bar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--grad-mix);
+}
+
+.stat-n {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  background: var(--grad-ember);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.stat-l {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  margin-top: 8px;
+  font-weight: 400;
+}
+
+/* ===== CTA ===== */
+.cta {
+  text-align: center;
+  padding: 150px 24px;
+  position: relative;
+}
+
+.cta-card {
+  max-width: 580px;
+  margin: 48px auto 0;
+  background: var(--surface);
+  border: 1px solid rgba(255,107,53,0.15);
+  border-radius: 28px;
+  padding: 52px 44px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-card::before {
+  content: '';
+  position: absolute;
+  top: -40%; left: -40%;
+  width: 180%; height: 180%;
+  background: radial-gradient(circle, rgba(255,107,53,0.04) 0%, transparent 60%);
+}
+
+.cta-card h3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  position: relative;
+}
+.cta-card p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+  position: relative;
+}
+.cta-card .btn {
+  position: relative;
+  font-size: 1.1rem;
+  padding: 18px 48px;
+}
+
+.cta-alt {
+  margin-top: 18px;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  position: relative;
+}
+.cta-alt a {
+  color: var(--ember-light);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  border-top: 1px solid rgba(255,255,255,0.04);
+  padding: 44px 40px;
+  text-align: center;
+}
+footer .logo { margin-bottom: 10px; display: inline-block; font-size: 1.4rem; }
+footer p { color: var(--text-dim); font-size: 0.82rem; font-weight: 400; }
+footer .lat {
+  display: inline-block;
+  margin-top: 8px;
+  font-style: italic;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+@keyframes scrollAnim {
+  0%,100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.2; transform: scaleY(0.5); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: all 0.75s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.vis {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .showcase { grid-template-columns: 1fr; gap: 20px; }
+  .arrow-col { transform: rotate(90deg); margin: -10px 0; }
+  .arrow-txt { writing-mode: horizontal-tb; transform: none; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .stats-bar { grid-template-columns: 1fr 1fr; padding: 36px 28px; }
+  nav { padding: 14px 20px; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .step { grid-template-columns: 56px 1fr; gap: 18px; }
+  .step-num { width: 56px; height: 56px; font-size: 1.4rem; border-radius: 14px; }
+  .step:not(:last-child)::after { left: 27px; }
+}
+@media (max-width: 600px) {
+  .stats-bar { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .app-kpis { grid-template-columns: 1fr; }
+  .hero-btns { flex-direction: column; align-items: center; }
+  .cta-card { padding: 36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="orb orb-4"></div>
+<div class="orb orb-5"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Pro<em>Solvo</em></div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#exemples">Exemple</a>
+    <a href="#methode">Méthode</a>
+    <a href="#contact" class="nav-cta">Parlons-en →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">
+    <span class="pulse-dot"></span>
+    Québec &amp; France · Solutions sur mesure
+  </div>
+  <h1>Des outils numériques<br>qui <em class="ember">travaillent pour vous.</em></h1>
+  <p class="hero-p">Automatisation, tableaux de bord, formulaires intelligents, traitement de données — on crée vos outils sur mesure pour éliminer le travail répétitif et vous faire gagner des heures chaque semaine.</p>
+  <div class="hero-btns">
+    <a href="#contact" class="btn btn-ember">Décrivez-moi votre besoin →</a>
+    <a href="#services" class="btn btn-ghost">Voir nos services</a>
+  </div>
+  <div class="scroll-cue">
+    <span>Défiler</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div style="text-align:center">
+    <span class="section-tag reveal">Nos services</span>
+    <h2 class="reveal">Quatre façons de vous<br><span class="ember">simplifier la vie.</span></h2>
+    <p class="section-p reveal" style="margin:0 auto">Chaque entreprise a ses processus manuels qui grugent du temps. On les transforme en outils qui roulent tout seuls.</p>
+  </div>
+  <div class="feat-grid" style="margin-top:64px">
+    <div class="feat reveal" style="border-left:3px solid var(--ember)">
+      <div class="feat-ico fi1">🔄</div>
+      <h3>Automatisation</h3>
+      <p>Vous faites la même tâche chaque jour, chaque semaine? Rapports, envois de courriels, mises à jour de fichiers, transferts de données — on automatise tout ça. Vous cliquez un bouton, c'est fait.</p>
+      <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(255,107,53,0.08);color:var(--ember-light);font-weight:600">Excel → Web</span>
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(255,107,53,0.08);color:var(--ember-light);font-weight:600">Courriels auto</span>
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(255,107,53,0.08);color:var(--ember-light);font-weight:600">Rapports PDF</span>
+      </div>
+    </div>
+    <div class="feat reveal" style="border-left:3px solid var(--cyan)">
+      <div class="feat-ico fi2">📊</div>
+      <h3>Tableaux de bord</h3>
+      <p>Vos données éparpillées dans 12 fichiers différents? On les rassemble dans un tableau de bord clair, accessible sur votre téléphone, avec les chiffres qui comptent vraiment.</p>
+      <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(34,211,238,0.08);color:var(--cyan);font-weight:600">Suivi projets</span>
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(34,211,238,0.08);color:var(--cyan);font-weight:600">KPI en temps réel</span>
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(34,211,238,0.08);color:var(--cyan);font-weight:600">Multi-utilisateurs</span>
+      </div>
+    </div>
+    <div class="feat reveal" style="border-left:3px solid var(--violet)">
+      <div class="feat-ico fi3">📋</div>
+      <h3>Formulaires intelligents</h3>
+      <p>Formulaires de contact, demandes de soumission, inscriptions — vos clients remplissent, vous recevez tout par courriel, les données se classent automatiquement. Zéro copier-coller.</p>
+      <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(139,92,246,0.08);color:var(--violet);font-weight:600">Envoi courriel auto</span>
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(139,92,246,0.08);color:var(--violet);font-weight:600">Collecte de données</span>
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(139,92,246,0.08);color:var(--violet);font-weight:600">Notifications</span>
+      </div>
+    </div>
+    <div class="feat reveal" style="border-left:3px solid var(--gold);grid-column:1/-1;max-width:380px;margin:0 auto">
+      <div class="feat-ico fi4">🐍</div>
+      <h3>Scripts & traitement de données</h3>
+      <p>Fichiers à nettoyer, données à fusionner, calculs complexes à automatiser? Nos scripts Python font en 3 minutes ce qui vous prend 2 heures à la main.</p>
+      <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(251,191,36,0.08);color:var(--gold);font-weight:600">Nettoyage de données</span>
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(251,191,36,0.08);color:var(--gold);font-weight:600">Fusion de fichiers</span>
+        <span style="font-size:0.68rem;padding:4px 12px;border-radius:20px;background:rgba(251,191,36,0.08);color:var(--gold);font-weight:600">Python</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="section" id="exemples">
+  <div style="text-align:center">
+    <span class="section-tag reveal">Exemple concret</span>
+    <h2 class="reveal">Un Excel de 448 projets.<br><span class="ember">2 heures → 3 minutes.</span></h2>
+    <p class="section-p reveal" style="margin:0 auto">Un client passait 2 heures par mois à mettre à jour son suivi manuellement. Voici ce qu'on en a fait.</p>
+  </div>
+
+  <!-- STACKED LAYOUT FOR MAX IMPACT -->
+  <div style="max-width:1100px;margin:64px auto 0;display:flex;flex-direction:column;gap:40px;" class="reveal">
+
+    <!-- ===== BEFORE: REALISTIC EXCEL ===== -->
+    <div>
+      <div class="card-tag bad" style="margin-bottom:14px;font-size:0.8rem;">⚠️ AVANT — Le fichier Excel du client</div>
+      <div style="background:#1a1f2e;border-radius:16px;overflow:hidden;border:1px solid rgba(251,113,133,0.15);box-shadow:0 0 40px rgba(251,113,133,0.05);">
+        <!-- Excel title bar -->
+        <div style="background:#217346;padding:8px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="display:flex;gap:5px;">
+            <span style="width:10px;height:10px;border-radius:50%;background:#ff5f56;"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:#27c93f;"></span>
+          </div>
+          <span style="color:white;font-size:0.72rem;font-weight:600;opacity:0.9;">📗 Suivi_Projets_FINAL_v3_COPIE(2)_Patrick_modifié.xlsx</span>
+        </div>
+        <!-- Excel ribbon -->
+        <div style="background:#2d5a3f;padding:4px 16px;display:flex;gap:20px;font-size:0.62rem;color:rgba(255,255,255,0.5);">
+          <span>Fichier</span><span>Accueil</span><span>Insertion</span><span>Données</span><span>Formules</span>
+        </div>
+        <!-- Formula bar -->
+        <div style="background:#1e2536;padding:5px 12px;font-family:'SF Mono','Courier New',monospace;font-size:0.62rem;color:#ff6b6b;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <span style="color:rgba(255,255,255,0.3);margin-right:8px;">fx</span> =VLOOKUP(B12,'[ancien_fichier.xlsx]Feuil1'!$A:$F,4,<span style="color:#ff6b6b;">FAUX)</span> <span style="background:#ff6b6b;color:white;padding:1px 6px;border-radius:3px;font-size:0.58rem;margin-left:8px;">#REF!</span>
+        </div>
+        <!-- Sheet tabs at bottom context -->
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:0.68rem;font-family:'SF Mono','Courier New',monospace;">
+            <thead>
+              <tr style="background:#1e2a3a;">
+                <th style="padding:7px 10px;color:rgba(255,255,255,0.3);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);width:30px;"></th>
+                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">A</th>
+                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">B</th>
+                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">C</th>
+                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">D</th>
+                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">E</th>
+                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">F</th>
+                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">G</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background:#161d2d;">
+                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);">1</td>
+                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">N° Projet</td>
+                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Client</td>
+                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Montant</td>
+                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Dern. paiement</td>
+                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Solde</td>
+                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Statut</td>
+                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Notes</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">2</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2041</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Tremblay &amp; Fils</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">45 780,00 $</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">2024-11-03</td>
+                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">12 450,00 $</td>
+                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">en attente??</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);font-style:italic;opacity:0.6;">voir courriel de mars</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">3</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2087</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">9321-4456 Qc inc</td>
+                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);font-weight:700;">#REF!</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
+                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">87 500,00 $</td>
+                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);font-weight:700;">NON — 45j retard</td>
+                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);font-weight:700;">⚠️ URGENT!!!</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">4</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2103</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Construction Gagnon</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">156 200,00 $</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">2025-01-15</td>
+                <td style="padding:6px 8px;color:#69db7c;border:1px solid rgba(255,255,255,0.04);background:rgba(105,219,124,0.04);">0,00 $</td>
+                <td style="padding:6px 8px;color:#69db7c;border:1px solid rgba(255,255,255,0.04);background:rgba(105,219,124,0.04);">terminé et payé</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
+              </tr>
+              <tr>
+                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">5</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2156</td>
+                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">???</td>
+                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">à vérifier</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);opacity:0.5;">??</td>
+                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.04);font-weight:600;">COPIÉ DU VIEUX FICHIER</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">6</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2198</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Côté Rénovation</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">34 900,00 $</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">2025-02-01</td>
+                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">8 700,00 $</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">partiel</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);font-style:italic;opacity:0.5;">relancer jeudi? ou vendredi</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">7</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2201</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Bélanger Toiture</td>
+                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">#NOM?</td>
+                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">jamais reçu</td>
+                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">22 100,00 $</td>
+                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">faillite??</td>
+                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">APPELER AVOCAT</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Sheet tabs -->
+        <div style="background:#1a2030;padding:6px 12px;display:flex;gap:2px;border-top:1px solid rgba(255,255,255,0.04);">
+          <span style="padding:4px 14px;background:#217346;color:white;font-size:0.6rem;font-weight:600;border-radius:4px 4px 0 0;">2025</span>
+          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2024</span>
+          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2023</span>
+          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2022</span>
+          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2021</span>
+          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2020</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ARROW ===== -->
+    <div style="text-align:center;padding:10px 0;">
+      <div style="display:inline-flex;align-items:center;gap:16px;background:var(--surface2);padding:12px 32px;border-radius:50px;border:1px solid rgba(255,107,53,0.15);">
+        <span style="font-size:0.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;background:var(--grad-ember);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ProSolvo</span>
+        <span style="font-size:1.4rem;">→</span>
+      </div>
+    </div>
+
+    <!-- ===== AFTER: STUNNING APP ===== -->
+    <div>
+      <div class="card-tag good" style="margin-bottom:14px;font-size:0.8rem;">✨ APRÈS — L'outil ProSolvo</div>
+      <div style="background:var(--surface);border-radius:20px;overflow:hidden;border:1px solid rgba(34,211,238,0.15);box-shadow:0 0 80px rgba(34,211,238,0.06),0 20px 60px rgba(0,0,0,0.4);">
+        <!-- App header -->
+        <div style="background:linear-gradient(135deg,#FF6B35,#8b5cf6,#22d3ee);padding:18px 28px;display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:1.1rem;">📊</span>
+            <span style="font-weight:800;font-size:0.95rem;color:white;">Suivi Projets</span>
+            <span style="background:rgba(255,255,255,0.2);padding:3px 12px;border-radius:20px;font-size:0.65rem;color:white;font-weight:600;">448 projets</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div style="background:rgba(255,255,255,0.15);padding:6px 16px;border-radius:20px;font-size:0.72rem;color:white;">🔍 Rechercher...</div>
+            <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:0.7rem;">👤</div>
+          </div>
+        </div>
+
+        <!-- KPI cards row -->
+        <div style="padding:24px 28px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+          <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--cyan);">
+            <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Projets actifs</div>
+            <div style="font-size:2rem;font-weight:900;color:var(--cyan);line-height:1.1;margin-top:4px;">12</div>
+            <div style="font-size:0.62rem;color:var(--lime);margin-top:4px;">↑ 3 ce mois</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--gold);">
+            <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">En retard</div>
+            <div style="font-size:2rem;font-weight:900;color:var(--gold);line-height:1.1;margin-top:4px;">3</div>
+            <div style="font-size:0.62rem;color:var(--rose);margin-top:4px;">↓ 1 depuis hier</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--lime);">
+            <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Montant reçu</div>
+            <div style="font-size:2rem;font-weight:900;color:var(--lime);line-height:1.1;margin-top:4px;">1.2M$</div>
+            <div style="font-size:0.62rem;color:var(--lime);margin-top:4px;">↑ 89% encaissé</div>
+          </div>
+          <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--rose);">
+            <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Solde à recevoir</div>
+            <div style="font-size:2rem;font-weight:900;color:var(--rose);line-height:1.1;margin-top:4px;">234k$</div>
+            <div style="font-size:0.62rem;color:var(--text-dim);margin-top:4px;">sur 28 projets</div>
+          </div>
+        </div>
+
+        <!-- Project list -->
+        <div style="padding:20px 28px 24px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <span style="font-size:0.78rem;font-weight:700;color:var(--text-mid);">Projets récents</span>
+            <div style="display:flex;gap:6px;">
+              <span style="padding:4px 12px;border-radius:20px;font-size:0.62rem;font-weight:700;background:rgba(255,107,53,0.12);color:var(--ember-light);">Tous</span>
+              <span style="padding:4px 12px;border-radius:20px;font-size:0.62rem;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-dim);">En retard</span>
+              <span style="padding:4px 12px;border-radius:20px;font-size:0.62rem;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-dim);">Terminés</span>
+            </div>
+          </div>
+
+          <!-- Row 1 -->
+          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;margin-bottom:6px;background:var(--surface2);align-items:center;font-size:0.78rem;">
+            <span style="font-weight:800;color:var(--text);">PRJ-2041</span>
+            <span style="color:var(--text-mid);">Tremblay & Fils</span>
+            <span style="color:var(--text-mid);">45 780 $</span>
+            <span style="color:var(--gold);">12 450 $ dû</span>
+            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(251,191,36,0.12);color:var(--gold);">⏳ En attente</span></span>
+          </div>
+          <!-- Row 2 - URGENT -->
+          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;margin-bottom:6px;background:rgba(251,113,133,0.04);border:1px solid rgba(251,113,133,0.1);align-items:center;font-size:0.78rem;">
+            <span style="font-weight:800;color:var(--text);">PRJ-2087</span>
+            <span style="color:var(--text-mid);">9321-4456 Qc inc</span>
+            <span style="color:var(--text-mid);">87 500 $</span>
+            <span style="color:var(--rose);font-weight:700;">87 500 $ dû</span>
+            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(251,113,133,0.15);color:var(--rose);">🔴 45j retard</span></span>
+          </div>
+          <!-- Row 3 -->
+          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;margin-bottom:6px;background:var(--surface2);align-items:center;font-size:0.78rem;">
+            <span style="font-weight:800;color:var(--text);">PRJ-2103</span>
+            <span style="color:var(--text-mid);">Construction Gagnon</span>
+            <span style="color:var(--text-mid);">156 200 $</span>
+            <span style="color:var(--lime);">0 $</span>
+            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(132,204,22,0.12);color:var(--lime);">✓ Complété</span></span>
+          </div>
+          <!-- Row 4 -->
+          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;margin-bottom:6px;background:var(--surface2);align-items:center;font-size:0.78rem;">
+            <span style="font-weight:800;color:var(--text);">PRJ-2198</span>
+            <span style="color:var(--text-mid);">Côté Rénovation</span>
+            <span style="color:var(--text-mid);">34 900 $</span>
+            <span style="color:var(--gold);">8 700 $ dû</span>
+            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(139,92,246,0.12);color:var(--violet);">📩 Relancé</span></span>
+          </div>
+          <!-- Row 5 -->
+          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;background:rgba(251,113,133,0.04);border:1px solid rgba(251,113,133,0.08);align-items:center;font-size:0.78rem;">
+            <span style="font-weight:800;color:var(--text);">PRJ-2201</span>
+            <span style="color:var(--text-mid);">Bélanger Toiture</span>
+            <span style="color:var(--text-mid);">22 100 $</span>
+            <span style="color:var(--rose);font-weight:700;">22 100 $ dû</span>
+            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(251,113,133,0.15);color:var(--rose);">⚠️ Faillite</span></span>
+          </div>
+        </div>
+
+        <!-- Bottom bar -->
+        <div style="background:var(--surface2);padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.04);">
+          <span style="font-size:0.65rem;color:var(--text-dim);">Dernière mise à jour : il y a 3 minutes</span>
+          <span style="font-size:0.65rem;color:var(--lime);font-weight:600;">● Synchronisé</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="section">
+  <div style="text-align:center">
+    <span class="section-tag reveal">L'avantage ProSolvo</span>
+    <h2 class="reveal">Ce qui nous rend<br><span class="ember">différents.</span></h2>
+  </div>
+  <div class="feat-grid" style="margin-top:64px">
+    <div class="feat reveal">
+      <div class="feat-ico fi2">⚡</div>
+      <h3>Livré en une semaine</h3>
+      <p>Pas 6 mois de développement. On va vite parce qu'on se concentre sur ce dont vous avez vraiment besoin.</p>
+    </div>
+    <div class="feat reveal">
+      <div class="feat-ico fi1">🎯</div>
+      <h3>Sur mesure, pas générique</h3>
+      <p>On ne vend pas un logiciel avec 200 fonctions inutiles. On construit exactement votre outil, adapté à votre façon de travailler.</p>
+    </div>
+    <div class="feat reveal">
+      <div class="feat-ico fi3">📱</div>
+      <h3>Accessible partout</h3>
+      <p>Téléphone, ordi, tablette. Vos données vous suivent en temps réel, peu importe où vous êtes.</p>
+    </div>
+    <div class="feat reveal">
+      <div class="feat-ico fi5">💬</div>
+      <h3>On parle votre langue</h3>
+      <p>Pas de jargon technique. Vous nous expliquez votre problème en mots simples, on s'occupe du reste.</p>
+    </div>
+    <div class="feat reveal">
+      <div class="feat-ico fi4">🔒</div>
+      <h3>Données sécurisées</h3>
+      <p>Hébergement au Canada. Vos données restent chez vous, pas sur des serveurs à l'autre bout du monde.</p>
+    </div>
+    <div class="feat reveal">
+      <div class="feat-ico fi6">✅</div>
+      <h3>Maquette gratuite</h3>
+      <p>On vous montre à quoi ça va ressembler avant de commencer. Si ça vous plaît pas, vous ne payez rien.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section" id="methode">
+  <div style="text-align:center">
+    <span class="section-tag reveal">Comment ça marche</span>
+    <h2 class="reveal">Trois étapes. <span class="ember">C'est tout.</span></h2>
+    <p class="section-p reveal" style="margin:0 auto">Pas de jargon technique, pas de réunions interminables. On va droit au but.</p>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Envoyez votre fichier</h3>
+        <p>Le fameux Excel que tout le monde utilise mais que personne n'aime. Expliquez-nous ce qui vous frustre — on comprend vite, on connaît votre réalité.</p>
+        <span class="step-chip">⏱ 15 minutes de votre temps</span>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Recevez une maquette</h3>
+        <p>En 48 heures, vous recevez une prévisualisation de votre futur outil. Vous dites ce que vous aimez, ce que vous changeriez. C'est votre outil, pas le nôtre.</p>
+        <span class="step-chip">✅ Gratuit et sans engagement</span>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Votre outil est en ligne</h3>
+        <p>Une semaine plus tard, c'est prêt. On vous forme en 30 minutes. Si quelque chose ne va pas, on ajuste. Aussi simple que ça.</p>
+        <span class="step-chip">🚀 Livré en 5 à 7 jours</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section">
+  <div class="stats-bar reveal">
+    <div>
+      <div class="stat-n">2h → 3min</div>
+      <div class="stat-l">Temps de mise à jour<br>d'un suivi de 448 projets</div>
+    </div>
+    <div>
+      <div class="stat-n">100%</div>
+      <div class="stat-l">Des données préservées<br>lors de la migration</div>
+    </div>
+    <div>
+      <div class="stat-n">7 jours</div>
+      <div class="stat-l">Délai moyen<br>de livraison</div>
+    </div>
+    <div>
+      <div class="stat-n">0 $</div>
+      <div class="stat-l">Pour la maquette<br>et la consultation</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <span class="section-tag reveal">On commence?</span>
+  <h2 class="reveal">Vous perdez du temps<br><span class="ember">sur des tâches répétitives?</span></h2>
+  <p class="section-p reveal" style="margin:0 auto">Décrivez-nous votre problème. On regarde, on vous propose une solution — la maquette est gratuite. Aucun engagement.</p>
+  <div class="cta-card reveal">
+    <h3>💬 Parlez-nous de votre besoin</h3>
+    <p>Par courriel — on vous répond en moins de 24h.</p>
+    <a href="mailto:contact@prosolvo.dev?subject=J'ai%20un%20besoin%20à%20automatiser&body=Bonjour%2C%0A%0AVoici%20ce%20que%20je%20fais%20manuellement%20et%20qui%20me%20prend%20du%20temps%20%3A%0A%0A%0AMerci!" class="btn btn-ember">contact@prosolvo.dev →</a>
+    <p class="cta-alt">Ou écrivez-nous directement à <a href="mailto:contact@prosolvo.dev">contact@prosolvo.dev</a></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Pro<em>Solvo</em></div>
+  <p>Solutions web sur mesure · Québec 🇨🇦 &amp; France 🇫🇷</p>
+  <span class="lat">« Solvo » — du latin : je résous, je libère, je dénoue.</span>
+  <p style="margin-top:12px;opacity:0.4;">© 2026 ProSolvo. Tous droits réservés.</p>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+document.querySelectorAll('.feat').forEach((c,i) => c.style.transitionDelay = `${i*0.07}s`);
+document.querySelectorAll('.step').forEach((s,i) => s.style.transitionDelay = `${i*0.12}s`);
+</script>
+
+</body>
+</html>
