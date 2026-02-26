@@ -742,6 +742,45 @@ footer .lat {
   .hero-btns { flex-direction: column; align-items: center; }
   .cta-card { padding: 36px 24px; }
 }
+/* DEMO TABS */
+.demo-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--surface2);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 14px;
+  cursor: pointer;
+  color: var(--text-dim);
+  transition: all 0.3s;
+  font-family: inherit;
+}
+.demo-tab:hover { background: var(--surface3); border-color: rgba(255,255,255,0.08); }
+.demo-tab.active { background: var(--surface3); border-color: var(--ember); box-shadow: 0 0 20px rgba(255,107,53,0.1); }
+.demo-tab.active .dt-icon { transform: scale(1.1); }
+.demo-tab.active strong { color: var(--ember-light); }
+.dt-icon { font-size: 1.4rem; transition: transform 0.3s; }
+.dt-text { display: flex; flex-direction: column; text-align: left; }
+.dt-text strong { font-size: 0.78rem; color: var(--text); transition: color 0.3s; }
+.dt-text small { font-size: 0.65rem; color: var(--text-dim); }
+
+.demo-panel { display: none; flex-direction: column; gap: 36px; animation: fadeSlide 0.4s ease; }
+.demo-panel.active { display: flex; }
+
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.kpi-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.app-row { display: grid; grid-template-columns: 0.6fr 1.2fr 0.7fr 0.8fr 0.7fr; }
+.form-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 28px; }
+
+@media (max-width: 768px) {
+  .demo-tab { flex:1; min-width:200px; }
+  .kpi-grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .app-row { grid-template-columns: 1fr 1fr; gap: 4px; }
+  .form-layout { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -832,252 +871,591 @@ footer .lat {
   </div>
 </section>
 
-<!-- BEFORE / AFTER -->
+<!-- EXEMPLES -->
 <section class="section" id="exemples">
   <div style="text-align:center">
-    <span class="section-tag reveal">Exemple concret</span>
-    <h2 class="reveal">Un Excel de 448 projets.<br><span class="ember">2 heures → 3 minutes.</span></h2>
-    <p class="section-p reveal" style="margin:0 auto">Un client passait 2 heures par mois à mettre à jour son suivi manuellement. Voici ce qu'on en a fait.</p>
+    <span class="section-tag reveal">Nos réalisations</span>
+    <h2 class="reveal">Des résultats concrets.<br><span class="ember">Voyez par vous-même.</span></h2>
+    <p class="section-p reveal" style="margin:0 auto">Chaque projet est unique. Voici trois exemples de ce qu'on construit pour nos clients.</p>
   </div>
 
-  <!-- STACKED LAYOUT FOR MAX IMPACT -->
-  <div style="max-width:1100px;margin:64px auto 0;display:flex;flex-direction:column;gap:40px;" class="reveal">
+  <!-- TAB NAVIGATION -->
+  <div class="reveal" style="max-width:1100px;margin:48px auto 0;">
+    <div id="demo-tabs" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:36px;">
+      <button class="demo-tab active" onclick="showDemo('excel')" data-tab="excel">
+        <span class="dt-icon">📊</span>
+        <span class="dt-text">
+          <strong>Excel → Tableau de bord</strong>
+          <small>2 heures → 3 minutes</small>
+        </span>
+      </button>
+      <button class="demo-tab" onclick="showDemo('comparateur')" data-tab="comparateur">
+        <span class="dt-icon">🔄</span>
+        <span class="dt-text">
+          <strong>Comparateur de fichiers</strong>
+          <small>Détecte et applique les changements</small>
+        </span>
+      </button>
+      <button class="demo-tab" onclick="showDemo('formulaire')" data-tab="formulaire">
+        <span class="dt-icon">🧮</span>
+        <span class="dt-text">
+          <strong>Calculateur de soumission</strong>
+          <small>Estimation + PDF automatique</small>
+        </span>
+      </button>
+    </div>
 
-    <!-- ===== BEFORE: REALISTIC EXCEL ===== -->
-    <div>
-      <div class="card-tag bad" style="margin-bottom:14px;font-size:0.8rem;">⚠️ AVANT — Le fichier Excel du client</div>
-      <div style="background:#1a1f2e;border-radius:16px;overflow:hidden;border:1px solid rgba(251,113,133,0.15);box-shadow:0 0 40px rgba(251,113,133,0.05);">
-        <!-- Excel title bar -->
-        <div style="background:#217346;padding:8px 16px;display:flex;align-items:center;gap:10px;">
-          <div style="display:flex;gap:5px;">
-            <span style="width:10px;height:10px;border-radius:50%;background:#ff5f56;"></span>
-            <span style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;"></span>
-            <span style="width:10px;height:10px;border-radius:50%;background:#27c93f;"></span>
+    <!-- ==================== DEMO 1: EXCEL → DASHBOARD ==================== -->
+    <div class="demo-panel active" id="demo-excel">
+      <!-- BEFORE -->
+      <div>
+        <div class="card-tag bad" style="margin-bottom:14px;font-size:0.8rem;">⚠️ AVANT — Le fichier Excel du client</div>
+        <div style="background:#1a1f2e;border-radius:16px;overflow:hidden;border:1px solid rgba(251,113,133,0.15);box-shadow:0 0 40px rgba(251,113,133,0.05);">
+          <div style="background:#217346;padding:8px 16px;display:flex;align-items:center;gap:10px;">
+            <div style="display:flex;gap:5px;">
+              <span style="width:10px;height:10px;border-radius:50%;background:#ff5f56;"></span>
+              <span style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;"></span>
+              <span style="width:10px;height:10px;border-radius:50%;background:#27c93f;"></span>
+            </div>
+            <span style="color:white;font-size:0.72rem;font-weight:600;opacity:0.9;">📗 Suivi_Projets_FINAL_v3_COPIE(2)_Patrick_modifié.xlsx</span>
           </div>
-          <span style="color:white;font-size:0.72rem;font-weight:600;opacity:0.9;">📗 Suivi_Projets_FINAL_v3_COPIE(2)_Patrick_modifié.xlsx</span>
+          <div style="background:#2d5a3f;padding:4px 16px;display:flex;gap:20px;font-size:0.62rem;color:rgba(255,255,255,0.5);">
+            <span>Fichier</span><span>Accueil</span><span>Insertion</span><span>Données</span><span>Formules</span>
+          </div>
+          <div style="background:#1e2536;padding:5px 12px;font-family:'SF Mono','Courier New',monospace;font-size:0.62rem;color:#ff6b6b;border-bottom:1px solid rgba(255,255,255,0.05);">
+            <span style="color:rgba(255,255,255,0.3);margin-right:8px;">fx</span> =VLOOKUP(B12,'[ancien_fichier.xlsx]Feuil1'!$A:$F,4,<span style="color:#ff6b6b;">FAUX)</span> <span style="background:#ff6b6b;color:white;padding:1px 6px;border-radius:3px;font-size:0.58rem;margin-left:8px;">#REF!</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;font-size:0.68rem;font-family:'SF Mono','Courier New',monospace;">
+              <thead>
+                <tr style="background:#1e2a3a;">
+                  <th style="padding:7px 10px;color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.04);width:30px;"></th>
+                  <th style="padding:7px 10px;color:rgba(255,255,255,0.4);text-align:center;border:1px solid rgba(255,255,255,0.04);">A</th>
+                  <th style="padding:7px 10px;color:rgba(255,255,255,0.4);text-align:center;border:1px solid rgba(255,255,255,0.04);">B</th>
+                  <th style="padding:7px 10px;color:rgba(255,255,255,0.4);text-align:center;border:1px solid rgba(255,255,255,0.04);">C</th>
+                  <th style="padding:7px 10px;color:rgba(255,255,255,0.4);text-align:center;border:1px solid rgba(255,255,255,0.04);">D</th>
+                  <th style="padding:7px 10px;color:rgba(255,255,255,0.4);text-align:center;border:1px solid rgba(255,255,255,0.04);">E</th>
+                  <th style="padding:7px 10px;color:rgba(255,255,255,0.4);text-align:center;border:1px solid rgba(255,255,255,0.04);">F</th>
+                  <th style="padding:7px 10px;color:rgba(255,255,255,0.4);text-align:center;border:1px solid rgba(255,255,255,0.04);">G</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background:#161d2d;">
+                  <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);">1</td>
+                  <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">N° Dossier</td>
+                  <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Client</td>
+                  <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Montant</td>
+                  <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Dern. paiement</td>
+                  <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Solde</td>
+                  <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Statut</td>
+                  <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Notes</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">2</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">001122</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Tremblay &amp; Fils</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">45 780 $</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">2024-11-03</td>
+                  <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">12 450 $</td>
+                  <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">en attente??</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);font-style:italic;opacity:0.6;">voir courriel de mars</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">3</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">002387</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">9321-4456 Qc inc</td>
+                  <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);font-weight:700;">#REF!</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
+                  <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">87 500 $</td>
+                  <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);font-weight:700;">NON — 45j retard</td>
+                  <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);font-weight:700;">⚠️ URGENT!!!</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">4</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">003501</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Construction Gagnon</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">156 200 $</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">2025-01-15</td>
+                  <td style="padding:6px 8px;color:#69db7c;border:1px solid rgba(255,255,255,0.04);background:rgba(105,219,124,0.04);">0 $</td>
+                  <td style="padding:6px 8px;color:#69db7c;border:1px solid rgba(255,255,255,0.04);background:rgba(105,219,124,0.04);">terminé et payé</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
+                </tr>
+                <tr>
+                  <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">5</td>
+                  <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">???</td>
+                  <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">ancien client?</td>
+                  <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">à vérifier</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);opacity:0.5;">??</td>
+                  <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.04);font-weight:600;">COPIÉ DU VIEUX FICHIER</td>
+                </tr>
+                <tr>
+                  <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">6</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">004712</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Bélanger Toiture</td>
+                  <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">#NOM?</td>
+                  <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">jamais reçu</td>
+                  <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">22 100 $</td>
+                  <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">faillite??</td>
+                  <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">APPELER AVOCAT</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="background:#1a2030;padding:6px 12px;display:flex;gap:2px;border-top:1px solid rgba(255,255,255,0.04);">
+            <span style="padding:4px 14px;background:#217346;color:white;font-size:0.6rem;font-weight:600;border-radius:4px 4px 0 0;">2025</span>
+            <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2024</span>
+            <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2023</span>
+            <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2022</span>
+          </div>
         </div>
-        <!-- Excel ribbon -->
-        <div style="background:#2d5a3f;padding:4px 16px;display:flex;gap:20px;font-size:0.62rem;color:rgba(255,255,255,0.5);">
-          <span>Fichier</span><span>Accueil</span><span>Insertion</span><span>Données</span><span>Formules</span>
+      </div>
+
+      <!-- ARROW -->
+      <div style="text-align:center;padding:24px 0;">
+        <div style="display:inline-flex;align-items:center;gap:16px;background:var(--surface2);padding:12px 32px;border-radius:50px;border:1px solid rgba(255,107,53,0.15);">
+          <span style="font-size:0.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;background:var(--grad-ember);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ProSolvo</span>
+          <span style="font-size:1.4rem;">→</span>
         </div>
-        <!-- Formula bar -->
-        <div style="background:#1e2536;padding:5px 12px;font-family:'SF Mono','Courier New',monospace;font-size:0.62rem;color:#ff6b6b;border-bottom:1px solid rgba(255,255,255,0.05);">
-          <span style="color:rgba(255,255,255,0.3);margin-right:8px;">fx</span> =VLOOKUP(B12,'[ancien_fichier.xlsx]Feuil1'!$A:$F,4,<span style="color:#ff6b6b;">FAUX)</span> <span style="background:#ff6b6b;color:white;padding:1px 6px;border-radius:3px;font-size:0.58rem;margin-left:8px;">#REF!</span>
-        </div>
-        <!-- Sheet tabs at bottom context -->
-        <div style="overflow-x:auto;">
-          <table style="width:100%;border-collapse:collapse;font-size:0.68rem;font-family:'SF Mono','Courier New',monospace;">
-            <thead>
-              <tr style="background:#1e2a3a;">
-                <th style="padding:7px 10px;color:rgba(255,255,255,0.3);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);width:30px;"></th>
-                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">A</th>
-                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">B</th>
-                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">C</th>
-                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">D</th>
-                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">E</th>
-                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">F</th>
-                <th style="padding:7px 10px;color:rgba(255,255,255,0.4);font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.04);">G</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="background:#161d2d;">
-                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);">1</td>
-                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">N° Projet</td>
-                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Client</td>
-                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Montant</td>
-                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Dern. paiement</td>
-                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Solde</td>
-                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Statut</td>
-                <td style="padding:6px 8px;color:#eee;font-weight:700;border:1px solid rgba(255,255,255,0.04);background:#1a2640;">Notes</td>
-              </tr>
-              <tr>
-                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">2</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2041</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Tremblay &amp; Fils</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">45 780,00 $</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">2024-11-03</td>
-                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">12 450,00 $</td>
-                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">en attente??</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);font-style:italic;opacity:0.6;">voir courriel de mars</td>
-              </tr>
-              <tr>
-                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">3</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2087</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">9321-4456 Qc inc</td>
-                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);font-weight:700;">#REF!</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
-                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">87 500,00 $</td>
-                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);font-weight:700;">NON — 45j retard</td>
-                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);font-weight:700;">⚠️ URGENT!!!</td>
-              </tr>
-              <tr>
-                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">4</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2103</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Construction Gagnon</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">156 200,00 $</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">2025-01-15</td>
-                <td style="padding:6px 8px;color:#69db7c;border:1px solid rgba(255,255,255,0.04);background:rgba(105,219,124,0.04);">0,00 $</td>
-                <td style="padding:6px 8px;color:#69db7c;border:1px solid rgba(255,255,255,0.04);background:rgba(105,219,124,0.04);">terminé et payé</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
-              </tr>
-              <tr>
-                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">5</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2156</td>
-                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">???</td>
-                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">à vérifier</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);"></td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);opacity:0.5;">??</td>
-                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.04);font-weight:600;">COPIÉ DU VIEUX FICHIER</td>
-              </tr>
-              <tr>
-                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">6</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2198</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Côté Rénovation</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">34 900,00 $</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">2025-02-01</td>
-                <td style="padding:6px 8px;color:#ffd43b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,212,59,0.04);">8 700,00 $</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">partiel</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);font-style:italic;opacity:0.5;">relancer jeudi? ou vendredi</td>
-              </tr>
-              <tr>
-                <td style="padding:6px 8px;text-align:center;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.04);background:#1e2536;">7</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">PRJ-2201</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">Bélanger Toiture</td>
-                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">#NOM?</td>
-                <td style="padding:6px 8px;color:var(--text-dim);border:1px solid rgba(255,255,255,0.04);">jamais reçu</td>
-                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">22 100,00 $</td>
-                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">faillite??</td>
-                <td style="padding:6px 8px;color:#ff6b6b;border:1px solid rgba(255,255,255,0.04);background:rgba(255,107,107,0.06);">APPELER AVOCAT</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- Sheet tabs -->
-        <div style="background:#1a2030;padding:6px 12px;display:flex;gap:2px;border-top:1px solid rgba(255,255,255,0.04);">
-          <span style="padding:4px 14px;background:#217346;color:white;font-size:0.6rem;font-weight:600;border-radius:4px 4px 0 0;">2025</span>
-          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2024</span>
-          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2023</span>
-          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2022</span>
-          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2021</span>
-          <span style="padding:4px 14px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);font-size:0.6rem;border-radius:4px 4px 0 0;">2020</span>
+      </div>
+
+      <!-- AFTER: DASHBOARD -->
+      <div>
+        <div class="card-tag good" style="margin-bottom:14px;font-size:0.8rem;">✨ APRÈS — L'outil ProSolvo</div>
+        <div style="background:var(--surface);border-radius:20px;overflow:hidden;border:1px solid rgba(34,211,238,0.15);box-shadow:0 0 80px rgba(34,211,238,0.06),0 20px 60px rgba(0,0,0,0.4);">
+          <div style="background:linear-gradient(135deg,#FF6B35,#8b5cf6,#22d3ee);padding:18px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="font-size:1.1rem;">📊</span>
+              <span style="font-weight:800;font-size:0.95rem;color:white;">Suivi Projets</span>
+              <span style="background:rgba(255,255,255,0.2);padding:3px 12px;border-radius:20px;font-size:0.65rem;color:white;font-weight:600;">448 projets</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <div style="background:rgba(255,255,255,0.15);padding:6px 16px;border-radius:20px;font-size:0.72rem;color:white;">🔍 Rechercher...</div>
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:0.7rem;">👤</div>
+            </div>
+          </div>
+          <div class="kpi-grid-4" style="padding:24px 28px 0;">
+            <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--cyan);">
+              <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Projets actifs</div>
+              <div style="font-size:2rem;font-weight:900;color:var(--cyan);line-height:1.1;margin-top:4px;">12</div>
+              <div style="font-size:0.62rem;color:var(--lime);margin-top:4px;">↑ 3 ce mois</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--gold);">
+              <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">En retard</div>
+              <div style="font-size:2rem;font-weight:900;color:var(--gold);line-height:1.1;margin-top:4px;">3</div>
+              <div style="font-size:0.62rem;color:var(--rose);margin-top:4px;">↓ 1 depuis hier</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--lime);">
+              <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Montant reçu</div>
+              <div style="font-size:2rem;font-weight:900;color:var(--lime);line-height:1.1;margin-top:4px;">1.2M$</div>
+              <div style="font-size:0.62rem;color:var(--lime);margin-top:4px;">↑ 89% encaissé</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--rose);">
+              <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Solde à recevoir</div>
+              <div style="font-size:2rem;font-weight:900;color:var(--rose);line-height:1.1;margin-top:4px;">234k$</div>
+              <div style="font-size:0.62rem;color:var(--text-dim);margin-top:4px;">sur 28 projets</div>
+            </div>
+          </div>
+          <div style="padding:20px 28px 24px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+              <span style="font-size:0.78rem;font-weight:700;color:var(--text-mid);">Projets récents</span>
+              <div style="display:flex;gap:6px;">
+                <span style="padding:4px 12px;border-radius:20px;font-size:0.62rem;font-weight:700;background:rgba(255,107,53,0.12);color:var(--ember-light);">Tous</span>
+                <span style="padding:4px 12px;border-radius:20px;font-size:0.62rem;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-dim);">En retard</span>
+                <span style="padding:4px 12px;border-radius:20px;font-size:0.62rem;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-dim);">Terminés</span>
+              </div>
+            </div>
+            <div class="app-row" style="padding:12px 16px;border-radius:12px;margin-bottom:6px;background:var(--surface2);align-items:center;font-size:0.78rem;">
+              <span style="font-weight:800;color:var(--text);">001122</span>
+              <span style="color:var(--text-mid);">Tremblay & Fils</span>
+              <span style="color:var(--text-mid);">45 780 $</span>
+              <span style="color:var(--gold);">12 450 $ dû</span>
+              <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(251,191,36,0.12);color:var(--gold);">⏳ En attente</span></span>
+            </div>
+            <div class="app-row" style="padding:12px 16px;border-radius:12px;margin-bottom:6px;background:rgba(251,113,133,0.04);border:1px solid rgba(251,113,133,0.1);align-items:center;font-size:0.78rem;">
+              <span style="font-weight:800;color:var(--text);">002387</span>
+              <span style="color:var(--text-mid);">9321-4456 Qc inc</span>
+              <span style="color:var(--text-mid);">87 500 $</span>
+              <span style="color:var(--rose);font-weight:700;">87 500 $ dû</span>
+              <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(251,113,133,0.15);color:var(--rose);">🔴 45j retard</span></span>
+            </div>
+            <div class="app-row" style="padding:12px 16px;border-radius:12px;margin-bottom:6px;background:var(--surface2);align-items:center;font-size:0.78rem;">
+              <span style="font-weight:800;color:var(--text);">003501</span>
+              <span style="color:var(--text-mid);">Construction Gagnon</span>
+              <span style="color:var(--text-mid);">156 200 $</span>
+              <span style="color:var(--lime);">0 $</span>
+              <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(132,204,22,0.12);color:var(--lime);">✓ Complété</span></span>
+            </div>
+            <div class="app-row" style="padding:12px 16px;border-radius:12px;background:rgba(251,113,133,0.04);border:1px solid rgba(251,113,133,0.08);align-items:center;font-size:0.78rem;">
+              <span style="font-weight:800;color:var(--text);">004712</span>
+              <span style="color:var(--text-mid);">Bélanger Toiture</span>
+              <span style="color:var(--text-mid);">22 100 $</span>
+              <span style="color:var(--rose);font-weight:700;">22 100 $ dû</span>
+              <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(251,113,133,0.15);color:var(--rose);">⚠️ Faillite</span></span>
+            </div>
+          </div>
+          <div style="background:var(--surface2);padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.04);">
+            <span style="font-size:0.65rem;color:var(--text-dim);">Dernière mise à jour : il y a 3 minutes</span>
+            <span style="font-size:0.65rem;color:var(--lime);font-weight:600;">● Synchronisé</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- ===== ARROW ===== -->
-    <div style="text-align:center;padding:10px 0;">
-      <div style="display:inline-flex;align-items:center;gap:16px;background:var(--surface2);padding:12px 32px;border-radius:50px;border:1px solid rgba(255,107,53,0.15);">
-        <span style="font-size:0.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;background:var(--grad-ember);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ProSolvo</span>
-        <span style="font-size:1.4rem;">→</span>
-      </div>
-    </div>
-
-    <!-- ===== AFTER: STUNNING APP ===== -->
-    <div>
-      <div class="card-tag good" style="margin-bottom:14px;font-size:0.8rem;">✨ APRÈS — L'outil ProSolvo</div>
-      <div style="background:var(--surface);border-radius:20px;overflow:hidden;border:1px solid rgba(34,211,238,0.15);box-shadow:0 0 80px rgba(34,211,238,0.06),0 20px 60px rgba(0,0,0,0.4);">
-        <!-- App header -->
-        <div style="background:linear-gradient(135deg,#FF6B35,#8b5cf6,#22d3ee);padding:18px 28px;display:flex;justify-content:space-between;align-items:center;">
+    <!-- ==================== DEMO 2: COMPARATEUR DE FICHIERS ==================== -->
+    <div class="demo-panel" id="demo-comparateur" style="display:none;">
+      <div class="card-tag good" style="margin-bottom:14px;font-size:0.8rem;">🔄 Comparateur — Détecte et applique les changements automatiquement</div>
+      <div style="background:var(--surface);border-radius:20px;overflow:hidden;border:1px solid rgba(139,92,246,0.15);box-shadow:0 0 80px rgba(139,92,246,0.06),0 20px 60px rgba(0,0,0,0.4);">
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);padding:18px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
           <div style="display:flex;align-items:center;gap:12px;">
-            <span style="font-size:1.1rem;">📊</span>
-            <span style="font-weight:800;font-size:0.95rem;color:white;">Suivi Projets</span>
-            <span style="background:rgba(255,255,255,0.2);padding:3px 12px;border-radius:20px;font-size:0.65rem;color:white;font-weight:600;">448 projets</span>
+            <span style="font-size:1.1rem;">🔄</span>
+            <span style="font-weight:800;font-size:0.95rem;color:white;">Comparateur de fichiers</span>
+          </div>
+          <span style="background:rgba(255,255,255,0.2);padding:5px 16px;border-radius:20px;font-size:0.7rem;color:white;font-weight:600;">2 fichiers chargés</span>
+        </div>
+
+        <!-- Two file zones -->
+        <div style="padding:24px 28px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="background:var(--surface2);border-radius:14px;padding:18px;border:1px dashed rgba(255,255,255,0.08);">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+              <span style="font-size:1rem;">📄</span>
+              <span style="font-size:0.75rem;font-weight:700;color:var(--text);">Fichier original</span>
+            </div>
+            <div style="background:var(--surface3);border-radius:8px;padding:10px 12px;font-size:0.68rem;font-family:monospace;">
+              <span style="color:var(--text);">Suivi_Master_2025.xlsx</span><br>
+              <span style="color:var(--text-dim);opacity:0.6;font-size:0.62rem;">448 lignes · Modifié le 12 janv.</span>
+            </div>
+          </div>
+          <div style="background:var(--surface2);border-radius:14px;padding:18px;border:1px dashed rgba(255,255,255,0.08);">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+              <span style="font-size:1rem;">📄</span>
+              <span style="font-size:0.75rem;font-weight:700;color:var(--text);">Nouveau fichier</span>
+            </div>
+            <div style="background:var(--surface3);border-radius:8px;padding:10px 12px;font-size:0.68rem;font-family:monospace;">
+              <span style="color:var(--text);">Mise_a_jour_fev_2025.xlsx</span><br>
+              <span style="color:var(--text-dim);opacity:0.6;font-size:0.62rem;">207 lignes · Reçu aujourd'hui</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results summary -->
+        <div class="kpi-grid-4" style="padding:0 28px;">
+          <div style="background:rgba(132,204,22,0.06);border:1px solid rgba(132,204,22,0.12);border-radius:12px;padding:14px;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:900;color:var(--lime);">201</div>
+            <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:1px;">Identiques</div>
+          </div>
+          <div style="background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.12);border-radius:12px;padding:14px;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:900;color:var(--cyan);">159</div>
+            <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:1px;">Modifiés</div>
+          </div>
+          <div style="background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.12);border-radius:12px;padding:14px;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:900;color:var(--ember);">356</div>
+            <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:1px;">Changements</div>
+          </div>
+          <div style="background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.12);border-radius:12px;padding:14px;text-align:center;">
+            <div style="font-size:1.6rem;font-weight:900;color:var(--gold);">68</div>
+            <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:1px;">Soldes à 0$</div>
+          </div>
+        </div>
+
+        <!-- Diff list -->
+        <div style="padding:20px 28px 24px;">
+          <div style="font-size:0.75rem;font-weight:700;color:var(--text-mid);margin-bottom:12px;">Changements détectés</div>
+          <div style="background:var(--surface2);border-radius:12px;padding:14px 16px;margin-bottom:6px;font-size:0.75rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span><span style="font-weight:800;color:var(--text);">001122</span> <span style="color:var(--text-dim);">· Tremblay & Fils</span></span>
+              <span style="padding:3px 10px;border-radius:20px;font-size:0.62rem;font-weight:700;background:rgba(34,211,238,0.1);color:var(--cyan);">3 modifs</span>
+            </div>
+            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;font-size:0.68rem;align-items:center;">
+              <span style="color:var(--rose);text-decoration:line-through;">Solde: 12 450 $</span>
+              <span style="color:var(--text-dim);">→</span>
+              <span style="color:var(--lime);font-weight:700;">Solde: 8 200 $</span>
+            </div>
+          </div>
+          <div style="background:var(--surface2);border-radius:12px;padding:14px 16px;margin-bottom:6px;font-size:0.75rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span><span style="font-weight:800;color:var(--text);">003501</span> <span style="color:var(--text-dim);">· Construction Gagnon</span></span>
+              <span style="padding:3px 10px;border-radius:20px;font-size:0.62rem;font-weight:700;background:rgba(132,204,22,0.1);color:var(--lime);">terminé</span>
+            </div>
+            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;font-size:0.68rem;align-items:center;">
+              <span style="color:var(--rose);text-decoration:line-through;">Statut: en cours</span>
+              <span style="color:var(--text-dim);">→</span>
+              <span style="color:var(--lime);font-weight:700;">Statut: terminé et payé</span>
+            </div>
+          </div>
+          <div style="background:var(--surface2);border-radius:12px;padding:14px 16px;font-size:0.75rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span><span style="font-weight:800;color:var(--text);">004712</span> <span style="color:var(--text-dim);">· Bélanger Toiture</span></span>
+              <span style="padding:3px 10px;border-radius:20px;font-size:0.62rem;font-weight:700;background:rgba(251,113,133,0.1);color:var(--rose);">⚠ faillite</span>
+            </div>
+            <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;font-size:0.68rem;align-items:center;">
+              <span style="color:var(--rose);text-decoration:line-through;">Solde: 22 100 $</span>
+              <span style="color:var(--text-dim);">→</span>
+              <span style="color:var(--gold);font-weight:700;">Solde: 0 $ — Faillite confirmée</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action bar -->
+        <div style="background:var(--surface2);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.04);flex-wrap:wrap;gap:10px;">
+          <span style="font-size:0.68rem;color:var(--text-dim);">Couleurs et formatage préservés à 100%</span>
+          <div style="display:flex;gap:8px;">
+            <span style="padding:6px 18px;border-radius:20px;font-size:0.7rem;font-weight:700;background:rgba(255,255,255,0.05);color:var(--text-dim);">📄 Rapport .txt</span>
+            <span style="padding:6px 18px;border-radius:20px;font-size:0.7rem;font-weight:700;background:var(--lime);color:#07070e;">✅ Appliquer les changements</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== DEMO 3: CALCULATEUR DE SOUMISSION ==================== -->
+    <div class="demo-panel" id="demo-formulaire" style="display:none;">
+      <div class="card-tag good" style="margin-bottom:14px;font-size:0.8rem;">🧮 Calculateur — L'entrepreneur entre ses données, l'outil génère la soumission</div>
+      <div style="background:var(--surface);border-radius:20px;overflow:hidden;border:1px solid rgba(16,185,129,0.15);box-shadow:0 0 80px rgba(16,185,129,0.06),0 20px 60px rgba(0,0,0,0.4);">
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg,#065f46,#047857,#10b981);padding:18px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:1.1rem;">🧮</span>
+            <span style="font-weight:800;font-size:0.95rem;color:white;">Soumission Express</span>
           </div>
           <div style="display:flex;gap:8px;align-items:center;">
-            <div style="background:rgba(255,255,255,0.15);padding:6px 16px;border-radius:20px;font-size:0.72rem;color:white;">🔍 Rechercher...</div>
-            <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:0.7rem;">👤</div>
+            <span style="background:rgba(255,255,255,0.2);padding:5px 16px;border-radius:20px;font-size:0.7rem;color:white;font-weight:600;">Salle de bain DG inc.</span>
+            <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:white;">DG</div>
           </div>
         </div>
 
-        <!-- KPI cards row -->
-        <div style="padding:24px 28px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
-          <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--cyan);">
-            <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Projets actifs</div>
-            <div style="font-size:2rem;font-weight:900;color:var(--cyan);line-height:1.1;margin-top:4px;">12</div>
-            <div style="font-size:0.62rem;color:var(--lime);margin-top:4px;">↑ 3 ce mois</div>
-          </div>
-          <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--gold);">
-            <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">En retard</div>
-            <div style="font-size:2rem;font-weight:900;color:var(--gold);line-height:1.1;margin-top:4px;">3</div>
-            <div style="font-size:0.62rem;color:var(--rose);margin-top:4px;">↓ 1 depuis hier</div>
-          </div>
-          <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--lime);">
-            <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Montant reçu</div>
-            <div style="font-size:2rem;font-weight:900;color:var(--lime);line-height:1.1;margin-top:4px;">1.2M$</div>
-            <div style="font-size:0.62rem;color:var(--lime);margin-top:4px;">↑ 89% encaissé</div>
-          </div>
-          <div style="background:var(--surface2);border-radius:16px;padding:20px;border-left:3px solid var(--rose);">
-            <div style="font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Solde à recevoir</div>
-            <div style="font-size:2rem;font-weight:900;color:var(--rose);line-height:1.1;margin-top:4px;">234k$</div>
-            <div style="font-size:0.62rem;color:var(--text-dim);margin-top:4px;">sur 28 projets</div>
-          </div>
-        </div>
+        <div class="form-layout" style="padding:24px;gap:24px;">
+          <!-- LEFT: Calculator inputs -->
+          <div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px;">Informations du projet</div>
 
-        <!-- Project list -->
-        <div style="padding:20px 28px 24px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-            <span style="font-size:0.78rem;font-weight:700;color:var(--text-mid);">Projets récents</span>
-            <div style="display:flex;gap:6px;">
-              <span style="padding:4px 12px;border-radius:20px;font-size:0.62rem;font-weight:700;background:rgba(255,107,53,0.12);color:var(--ember-light);">Tous</span>
-              <span style="padding:4px 12px;border-radius:20px;font-size:0.62rem;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-dim);">En retard</span>
-              <span style="padding:4px 12px;border-radius:20px;font-size:0.62rem;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-dim);">Terminés</span>
+            <!-- Client info -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+              <div>
+                <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Nom du client</label>
+                <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;font-size:0.8rem;color:var(--text);">Jean-François Pelletier</div>
+              </div>
+              <div>
+                <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Adresse</label>
+                <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;font-size:0.8rem;color:var(--text);">88 boul. Samson, Laval</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+              <div>
+                <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Courriel</label>
+                <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;font-size:0.8rem;color:var(--text);">jf.pelletier@gmail.com</div>
+              </div>
+              <div>
+                <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Téléphone</label>
+                <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;font-size:0.8rem;color:var(--text);">(438) 555-0193</div>
+              </div>
+            </div>
+
+            <div style="border-top:1px solid rgba(255,255,255,0.04);margin:16px 0;"></div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px;">Détails de la salle de bain</div>
+
+            <!-- Dimensions -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+              <div>
+                <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Longueur</label>
+                <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;font-size:0.8rem;color:var(--text);font-weight:600;">9 pi</div>
+              </div>
+              <div>
+                <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Largeur</label>
+                <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;font-size:0.8rem;color:var(--text);font-weight:600;">7 pi</div>
+              </div>
+              <div>
+                <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Superficie</label>
+                <div style="background:var(--surface2);border:1px solid rgba(16,185,129,0.15);border-radius:10px;padding:10px 14px;font-size:0.8rem;color:#10b981;font-weight:700;">63 pi² <span style="font-size:0.6rem;opacity:0.6;">auto</span></div>
+              </div>
+            </div>
+
+            <!-- Type d'installation -->
+            <div style="margin-bottom:14px;">
+              <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Type de douche / bain</label>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span style="padding:5px 12px;border-radius:20px;font-size:0.7rem;font-weight:600;background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.25);">🚿 Douche en céramique</span>
+                <span style="padding:5px 12px;border-radius:20px;font-size:0.7rem;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-dim);">🛁 Bain autoportant</span>
+                <span style="padding:5px 12px;border-radius:20px;font-size:0.7rem;font-weight:600;background:rgba(255,255,255,0.04);color:var(--text-dim);">🚿🛁 Combo</span>
+              </div>
+            </div>
+
+            <!-- Choix céramique -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+              <div>
+                <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Céramique murale</label>
+                <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;font-size:0.78rem;color:var(--text);">Porcelaine 12×24 — 8,50$/pi²</div>
+              </div>
+              <div>
+                <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Céramique plancher</label>
+                <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;font-size:0.78rem;color:var(--text);">Grès cérame antidérapant — 6,75$/pi²</div>
+              </div>
+            </div>
+
+            <!-- Travaux inclus -->
+            <div style="margin-bottom:14px;">
+              <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Travaux inclus</label>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span style="padding:5px 10px;border-radius:8px;font-size:0.66rem;font-weight:600;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#10b981;">✓ Démolition</span>
+                <span style="padding:5px 10px;border-radius:8px;font-size:0.66rem;font-weight:600;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#10b981;">✓ Plomberie</span>
+                <span style="padding:5px 10px;border-radius:8px;font-size:0.66rem;font-weight:600;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#10b981;">✓ Céramique murs</span>
+                <span style="padding:5px 10px;border-radius:8px;font-size:0.66rem;font-weight:600;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#10b981;">✓ Céramique plancher</span>
+                <span style="padding:5px 10px;border-radius:8px;font-size:0.66rem;font-weight:600;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#10b981;">✓ Vanité + miroir</span>
+                <span style="padding:5px 10px;border-radius:8px;font-size:0.66rem;font-weight:600;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:var(--text-dim);">Électricité</span>
+                <span style="padding:5px 10px;border-radius:8px;font-size:0.66rem;font-weight:600;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:var(--text-dim);">Plancher chauffant</span>
+              </div>
+            </div>
+
+            <!-- Lignes personnalisées -->
+            <div style="margin-bottom:14px;">
+              <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Lignes supplémentaires</label>
+              <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;">
+                <div style="display:grid;grid-template-columns:1fr 80px;border-bottom:1px solid rgba(255,255,255,0.04);">
+                  <div style="padding:8px 12px;font-size:0.75rem;color:var(--text);">Niche encastrée dans la douche</div>
+                  <div style="padding:8px 12px;font-size:0.75rem;color:var(--text);font-weight:600;text-align:right;border-left:1px solid rgba(255,255,255,0.04);">350 $</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 80px;">
+                  <div style="padding:8px 12px;font-size:0.75rem;color:var(--text);">Porte de douche vitrée sur mesure</div>
+                  <div style="padding:8px 12px;font-size:0.75rem;color:var(--text);font-weight:600;text-align:right;border-left:1px solid rgba(255,255,255,0.04);">1 200 $</div>
+                </div>
+              </div>
+              <div style="margin-top:6px;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:8px;font-size:0.65rem;font-weight:600;background:rgba(16,185,129,0.08);color:#10b981;border:1px dashed rgba(16,185,129,0.2);cursor:pointer;">+ Ajouter une ligne</div>
+            </div>
+
+            <!-- Marge -->
+            <div>
+              <label style="font-size:0.65rem;font-weight:700;color:var(--text-dim);display:block;margin-bottom:5px;">Marge de profit</label>
+              <div style="background:var(--surface2);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:12px;">
+                <div style="flex:1;height:6px;background:var(--surface3);border-radius:3px;position:relative;overflow:hidden;">
+                  <div style="width:55%;height:100%;background:linear-gradient(90deg,#047857,#10b981);border-radius:3px;"></div>
+                </div>
+                <span style="font-size:0.9rem;font-weight:900;color:#10b981;min-width:40px;">22%</span>
+              </div>
             </div>
           </div>
 
-          <!-- Row 1 -->
-          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;margin-bottom:6px;background:var(--surface2);align-items:center;font-size:0.78rem;">
-            <span style="font-weight:800;color:var(--text);">PRJ-2041</span>
-            <span style="color:var(--text-mid);">Tremblay & Fils</span>
-            <span style="color:var(--text-mid);">45 780 $</span>
-            <span style="color:var(--gold);">12 450 $ dû</span>
-            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(251,191,36,0.12);color:var(--gold);">⏳ En attente</span></span>
-          </div>
-          <!-- Row 2 - URGENT -->
-          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;margin-bottom:6px;background:rgba(251,113,133,0.04);border:1px solid rgba(251,113,133,0.1);align-items:center;font-size:0.78rem;">
-            <span style="font-weight:800;color:var(--text);">PRJ-2087</span>
-            <span style="color:var(--text-mid);">9321-4456 Qc inc</span>
-            <span style="color:var(--text-mid);">87 500 $</span>
-            <span style="color:var(--rose);font-weight:700;">87 500 $ dû</span>
-            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(251,113,133,0.15);color:var(--rose);">🔴 45j retard</span></span>
-          </div>
-          <!-- Row 3 -->
-          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;margin-bottom:6px;background:var(--surface2);align-items:center;font-size:0.78rem;">
-            <span style="font-weight:800;color:var(--text);">PRJ-2103</span>
-            <span style="color:var(--text-mid);">Construction Gagnon</span>
-            <span style="color:var(--text-mid);">156 200 $</span>
-            <span style="color:var(--lime);">0 $</span>
-            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(132,204,22,0.12);color:var(--lime);">✓ Complété</span></span>
-          </div>
-          <!-- Row 4 -->
-          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;margin-bottom:6px;background:var(--surface2);align-items:center;font-size:0.78rem;">
-            <span style="font-weight:800;color:var(--text);">PRJ-2198</span>
-            <span style="color:var(--text-mid);">Côté Rénovation</span>
-            <span style="color:var(--text-mid);">34 900 $</span>
-            <span style="color:var(--gold);">8 700 $ dû</span>
-            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(139,92,246,0.12);color:var(--violet);">📩 Relancé</span></span>
-          </div>
-          <!-- Row 5 -->
-          <div style="display:grid;grid-template-columns:1fr 1.2fr 0.8fr 0.8fr 0.7fr;gap:0;padding:12px 16px;border-radius:12px;background:rgba(251,113,133,0.04);border:1px solid rgba(251,113,133,0.08);align-items:center;font-size:0.78rem;">
-            <span style="font-weight:800;color:var(--text);">PRJ-2201</span>
-            <span style="color:var(--text-mid);">Bélanger Toiture</span>
-            <span style="color:var(--text-mid);">22 100 $</span>
-            <span style="color:var(--rose);font-weight:700;">22 100 $ dû</span>
-            <span style="text-align:right;"><span style="padding:4px 12px;border-radius:20px;font-size:0.65rem;font-weight:700;background:rgba(251,113,133,0.15);color:var(--rose);">⚠️ Faillite</span></span>
-          </div>
-        </div>
+          <!-- RIGHT: Live preview of generated quote -->
+          <div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px;">Aperçu de la soumission</div>
+            <div style="background:white;border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+              <!-- PDF Header -->
+              <div style="background:linear-gradient(135deg,#065f46,#047857);padding:20px 22px;">
+                <div style="display:flex;justify-content:space-between;align-items:start;">
+                  <div>
+                    <div style="font-size:1rem;font-weight:900;color:white;letter-spacing:0.5px;">SALLE DE BAIN DG</div>
+                    <div style="font-size:0.58rem;color:rgba(255,255,255,0.5);margin-top:2px;">RBQ : 8901-5432-01 · info@salledebain-dg.ca · (450) 555-8800</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-size:0.58rem;color:rgba(255,255,255,0.4);">SOUMISSION</div>
+                    <div style="font-size:0.82rem;font-weight:800;color:#6ee7b7;">SOU-2025-0083</div>
+                    <div style="font-size:0.55rem;color:rgba(255,255,255,0.35);margin-top:2px;">26 février 2025</div>
+                  </div>
+                </div>
+              </div>
+              <!-- PDF body -->
+              <div style="padding:16px 20px;font-family:Georgia,serif;">
+                <div style="font-size:0.62rem;color:#888;margin-bottom:8px;">Préparé pour <strong style="color:#222;">Jean-François Pelletier</strong> · 88 boul. Samson, Laval</div>
+                <div style="font-size:0.58rem;color:#aaa;margin-bottom:10px;">Rénovation complète salle de bain — 63 pi² (9×7)</div>
+                <table style="width:100%;border-collapse:collapse;font-size:0.62rem;color:#333;">
+                  <tr style="background:#f4f4f4;">
+                    <td style="padding:5px 8px;font-weight:700;border-bottom:1px solid #e0e0e0;">Description</td>
+                    <td style="padding:5px 8px;font-weight:700;text-align:center;border-bottom:1px solid #e0e0e0;width:50px;">Qté</td>
+                    <td style="padding:5px 8px;font-weight:700;text-align:right;border-bottom:1px solid #e0e0e0;width:55px;">Prix unit.</td>
+                    <td style="padding:5px 8px;font-weight:700;text-align:right;border-bottom:1px solid #e0e0e0;width:65px;">Montant</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px;border-bottom:1px solid #eee;">Démolition complète (murs, plancher, plomberie)</td>
+                    <td style="padding:4px 8px;text-align:center;border-bottom:1px solid #eee;">1</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">—</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">1 800 $</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px;border-bottom:1px solid #eee;">Plomberie (douche, vanité, drain, alimentation)</td>
+                    <td style="padding:4px 8px;text-align:center;border-bottom:1px solid #eee;">1</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">—</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">3 400 $</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px;border-bottom:1px solid #eee;">Céramique murale — Porcelaine 12×24</td>
+                    <td style="padding:4px 8px;text-align:center;border-bottom:1px solid #eee;">110 pi²</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">8,50 $</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">935 $</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px;border-bottom:1px solid #eee;">Pose céramique murale (mat. + main-d'œuvre)</td>
+                    <td style="padding:4px 8px;text-align:center;border-bottom:1px solid #eee;">110 pi²</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">7,00 $</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">770 $</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px;border-bottom:1px solid #eee;">Céramique plancher — Grès cérame antidérapant</td>
+                    <td style="padding:4px 8px;text-align:center;border-bottom:1px solid #eee;">63 pi²</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">6,75 $</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">425 $</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px;border-bottom:1px solid #eee;">Pose céramique plancher (mat. + main-d'œuvre)</td>
+                    <td style="padding:4px 8px;text-align:center;border-bottom:1px solid #eee;">63 pi²</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">6,50 $</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">410 $</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px;border-bottom:1px solid #eee;">Vanité 48po + miroir + robinetterie</td>
+                    <td style="padding:4px 8px;text-align:center;border-bottom:1px solid #eee;">1</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">—</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">2 200 $</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px;border-bottom:1px solid #eee;">Niche encastrée dans la douche</td>
+                    <td style="padding:4px 8px;text-align:center;border-bottom:1px solid #eee;">1</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">—</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">350 $</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:4px 8px;border-bottom:1px solid #eee;">Porte de douche vitrée sur mesure</td>
+                    <td style="padding:4px 8px;text-align:center;border-bottom:1px solid #eee;">1</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">—</td>
+                    <td style="padding:4px 8px;text-align:right;border-bottom:1px solid #eee;">1 200 $</td>
+                  </tr>
+                  <tr style="background:#f8f8f8;">
+                    <td colspan="3" style="padding:5px 8px;font-weight:700;color:#222;">Sous-total</td>
+                    <td style="padding:5px 8px;font-weight:700;text-align:right;color:#222;">11 490 $</td>
+                  </tr>
+                  <tr>
+                    <td colspan="3" style="padding:4px 8px;color:#888;">TPS (5%)</td>
+                    <td style="padding:4px 8px;text-align:right;color:#888;">574,50 $</td>
+                  </tr>
+                  <tr>
+                    <td colspan="3" style="padding:4px 8px;color:#888;">TVQ (9,975%)</td>
+                    <td style="padding:4px 8px;text-align:right;color:#888;">1 146,13 $</td>
+                  </tr>
+                </table>
+                <div style="margin-top:10px;padding:10px 12px;background:linear-gradient(135deg,#065f46,#047857);border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-size:0.72rem;font-weight:800;color:white;">TOTAL</span>
+                  <span style="font-size:1.1rem;font-weight:900;color:white;">13 210,63 $</span>
+                </div>
+                <div style="margin-top:8px;padding:6px 8px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:6px;font-size:0.56rem;color:#047857;">
+                  💰 Votre marge à 22% : <strong>2 528 $</strong> de profit sur ce projet · <span style="opacity:0.6;">Visible seulement par vous</span>
+                </div>
+                <div style="margin-top:6px;font-size:0.52rem;color:#bbb;line-height:1.4;">
+                  Cette soumission est valide pour 30 jours. Les prix n'incluent pas les matériaux choisis par le client (luminaires, accessoires). Un dépôt de 30% est requis à la signature.
+                </div>
+              </div>
+            </div>
 
-        <!-- Bottom bar -->
-        <div style="background:var(--surface2);padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.04);">
-          <span style="font-size:0.65rem;color:var(--text-dim);">Dernière mise à jour : il y a 3 minutes</span>
-          <span style="font-size:0.65rem;color:var(--lime);font-weight:600;">● Synchronisé</span>
+            <!-- Action buttons -->
+            <div style="display:flex;gap:8px;margin-top:14px;">
+              <div style="flex:1;background:linear-gradient(135deg,#065f46,#047857);color:white;text-align:center;padding:12px;border-radius:10px;font-weight:800;font-size:0.78rem;">📄 Générer le PDF</div>
+              <div style="flex:1;background:var(--surface2);color:var(--text-mid);text-align:center;padding:12px;border-radius:10px;font-weight:700;font-size:0.78rem;border:1px solid rgba(255,255,255,0.06);">✉️ Envoyer au client</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
   </div>
 </section>
-
 <!-- BENEFITS -->
 <section class="section">
   <div style="text-align:center">
@@ -1203,6 +1581,15 @@ const obs = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 document.querySelectorAll('.feat').forEach((c,i) => c.style.transitionDelay = `${i*0.07}s`);
 document.querySelectorAll('.step').forEach((s,i) => s.style.transitionDelay = `${i*0.12}s`);
+
+function showDemo(id) {
+  document.querySelectorAll('.demo-panel').forEach(p => { p.style.display = 'none'; p.classList.remove('active'); });
+  document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById('demo-' + id);
+  if (panel) { panel.style.display = 'flex'; panel.classList.add('active'); }
+  const tab = document.querySelector('[data-tab="' + id + '"]');
+  if (tab) tab.classList.add('active');
+}
 </script>
 
 </body>
